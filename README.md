@@ -14,7 +14,7 @@ uv sync
 
 ## テスト1
 
-[paho/test/topic](https://pypi.org/project/paho-mqtt/) の Getting Started にある
+[paho\-mqtt · PyPI](https://pypi.org/project/paho-mqtt/) の Getting Started にある
 Subscriber example / publisher example をほぼそのまま
 
 Eclipse Mosquitto をアノニマス接続で、生の MQTT
@@ -29,3 +29,5 @@ poe pub1
 # サーバ止める
 poe down
 ```
+
+2 個メッセージを受けたら、sub1 は終了する。

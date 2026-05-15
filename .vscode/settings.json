@@ -1,5 +1,5 @@
 {
-	"cSpell.words": ["mosquitto", "mqtt", "mqttc", "SUBACK", "unacked"],
+	"cSpell.words": ["mosquitto", "mqtt", "mqttc", "reasoncodes", "SUBACK", "unacked"],
 	"chat.tools.terminal.autoApprove": {
 		"/^cd /home/heiwa/works/mqtt/mqtt-learn1 && timeout 8s poe sub1$/": {
 			"approve": true,
@@ -14,6 +14,10 @@
 			"matchCommandLine": true
 		},
 		"/^cd /home/heiwa/works/mqtt/mqtt-learn1 && poe sub1$/": {
+			"approve": true,
+			"matchCommandLine": true
+		},
+		"/^cd /home/heiwa/works/mqtt/mqtt-learn1 && poe mypy$/": {
 			"approve": true,
 			"matchCommandLine": true
 		}

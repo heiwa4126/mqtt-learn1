@@ -1,12 +1,21 @@
 import time
 
 import paho.mqtt.client as mqtt
+from paho.mqtt.client import Client
+from paho.mqtt.properties import Properties
+from paho.mqtt.reasoncodes import ReasonCode
 
 TOPIC = "heiwa4126/mqtt-learn1/test1"
 BROKER = "localhost"
 
 
-def on_publish(client, userdata, mid, reason_code, properties):
+def on_publish(
+    client: Client,
+    userdata: set[int],
+    mid: int,
+    reason_code: ReasonCode,
+    properties: Properties,
+) -> None:
     # reason_code and properties will only be present in MQTTv5. It's always unset in MQTTv3
     try:
         userdata.remove(mid)
@@ -30,7 +39,7 @@ def on_publish(client, userdata, mid, reason_code, properties):
         print("but remember that mid could be re-used !")
 
 
-unacked_publish = set()
+unacked_publish: set[int] = set()
 mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
 mqttc.on_publish = on_publish
 

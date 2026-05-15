@@ -1,4 +1,7 @@
 import paho.mqtt.client as mqtt
+from paho.mqtt.client import Client, ConnectFlags, MQTTMessage
+from paho.mqtt.properties import Properties
+from paho.mqtt.reasoncodes import ReasonCode
 
 BROKER = "127.0.0.1"
 TOPIC = "heiwa4126/mqtt-learn1/test1"
@@ -6,7 +9,13 @@ SYSTEM_TOPIC = "$SYS/#"
 EXPECTED_MESSAGES = 2
 
 
-def on_subscribe(client, userdata, mid, reason_code_list, properties):
+def on_subscribe(
+    client: Client,
+    userdata: list[bytes],
+    mid: int,
+    reason_code_list: list[ReasonCode],
+    properties: Properties | None,
+) -> None:
     # Since we subscribed only for a single channel, reason_code_list contains
     # a single entry
     if reason_code_list[0].is_failure:
@@ -15,7 +24,13 @@ def on_subscribe(client, userdata, mid, reason_code_list, properties):
         print(f"Broker granted the following QoS: {reason_code_list[0].value}")
 
 
-def on_unsubscribe(client, userdata, mid, reason_code_list, properties):
+def on_unsubscribe(
+    client: Client,
+    userdata: list[bytes],
+    mid: int,
+    reason_code_list: list[ReasonCode],
+    properties: Properties | None,
+) -> None:
     # Be careful, the reason_code_list is only present in MQTTv5.
     # In MQTTv3 it will always be empty
     if len(reason_code_list) == 0 or not reason_code_list[0].is_failure:
@@ -25,7 +40,7 @@ def on_unsubscribe(client, userdata, mid, reason_code_list, properties):
     client.disconnect()
 
 
-def on_message(client, userdata, message):
+def on_message(client: Client, userdata: list[bytes], message: MQTTMessage) -> None:
     # userdata is the structure we choose to provide, here it's a list()
     userdata.append(message.payload)
     print(
@@ -37,7 +52,13 @@ def on_message(client, userdata, message):
         client.unsubscribe(TOPIC)
 
 
-def on_connect(client, userdata, flags, reason_code, properties):
+def on_connect(
+    client: Client,
+    userdata: list[bytes],
+    flags: ConnectFlags,
+    reason_code: ReasonCode,
+    properties: Properties | None,
+) -> None:
     if reason_code.is_failure:
         print(f"Failed to connect: {reason_code}. loop_forever() will retry connection")
     else:
