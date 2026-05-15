@@ -5,8 +5,7 @@ from paho.mqtt.client import Client
 from paho.mqtt.properties import Properties
 from paho.mqtt.reasoncodes import ReasonCode
 
-TOPIC = "heiwa4126/mqtt-learn1/test1"
-BROKER = "localhost"
+from mqtt_learn1.lib1 import BROKER, TOPIC
 
 
 def on_publish(

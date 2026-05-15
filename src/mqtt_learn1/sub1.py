@@ -3,10 +3,7 @@ from paho.mqtt.client import Client, ConnectFlags, MQTTMessage
 from paho.mqtt.properties import Properties
 from paho.mqtt.reasoncodes import ReasonCode
 
-BROKER = "127.0.0.1"
-TOPIC = "heiwa4126/mqtt-learn1/test1"
-SYSTEM_TOPIC = "$SYS/#"
-EXPECTED_MESSAGES = 2
+from mqtt_learn1.lib1 import BROKER, EXPECTED_MESSAGES, TOPIC
 
 
 def on_subscribe(
