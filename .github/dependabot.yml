@@ -15,8 +15,9 @@ updates:
           - "*"
     cooldown:
       default-days: 7
-  - package-ecosystem: github-actions
-    directory: / # GitHub Actions のみ固定で"/"
+
+  - package-ecosystem: docker
+    directory: "/"
     schedule:
       interval: monthly
     groups:
