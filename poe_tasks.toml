@@ -1,0 +1,81 @@
+# envfile = ".env"
+
+[executor]
+type = "uv"
+
+[env]
+RUN_BASE = "src/pep440check"
+TRIVY_IGNORE = "--skip-dirs ./tmp,./xml"
+SHELL = "bash"
+
+[tasks]
+main = "pep440check"
+
+# ======== tests
+test = "pytest -v --tb=short src"
+tests = ["test"]
+
+# ======== smoke tests
+smoke1 = "uv run --isolated --no-project --with dist/*.whl pep440check"
+smoke2 = "uv run --isolated --no-project --with dist/*.tar.gz pep440check"
+smoke_test = ["smoke1", "smoke2"]
+
+# ======== lint
+check = "ruff check ./src"
+# mypy = "mypy src"
+mypy = "pyrefly check src"
+pyrefly = "pyrefly check src"
+pyproject_lint = "validate-pyproject pyproject.toml"
+actionlint = "actionlint"
+
+lint = ["check", "mypy", "pyproject_lint"]
+lint_full = ["lint", "actionlint"]
+
+# audit = "uvx uv-secure --show-severity --ignore-vulns GHSA-5239-wwwm-4pmq ./uv.lock"
+audit = "uvx uv-secure"
+
+# ======== build
+# clean = "rm -rf dist"
+clean = "python -c \"import shutil; shutil.rmtree('dist', ignore_errors=True)\""
+pack = "uv build"
+
+# ======== build
+build = ["audit", "build1"]
+
+build1 = [
+	"lint",
+	# "format",
+	"tests",
+	# "actionlint",
+	"clean",
+	"pack",
+	"smoke_test",
+]
+
+
+# ======== utils
+format_python = "ruff format"
+format_others.shell = "oxfmt"
+format = ["format_python", "format_others"]
+
+update.shell = "uv lock -U && uv sync"
+
+uvsync = "uv sync"
+requirements = "uv pip compile pyproject.toml --no-deps -o requirements.txt"
+sync = ["uvsync", "requirements"]
+
+trivy-config = "trivy config ."
+trivy-fs = "trivy fs ${TRIVY_IGNORE} ."
+trivy-check = ["trivy-config", "trivy-fs"]
+trivy = ["trivy-check"]
+trivy-license = "trivy fs ${TRIVY_IGNORE} --scanners license --severity HIGH,CRITICAL ."
+trivy-sbom = "trivy fs ${TRIVY_IGNORE} --scanners vuln --format cyclonedx --output sbom.cdx.json ."
+trivy-sbom-spdx = "trivy fs ${TRIVY_IGNORE} --scanners vuln --format spdx-json --output sbom.spdx.json ."
+sbom = ["requirements", "trivy-sbom", "trivy-sbom-spdx"]
+
+[tasks.testpypi]
+help = "Build and upload to Test PyPI"
+envfile = ".env"
+cmd = """uv publish \
+  --publish-url https://test.pypi.org/legacy/ \
+  --token $TEST_PYPI_TOKEN"""
