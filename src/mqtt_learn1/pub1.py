@@ -2,8 +2,8 @@ import time
 
 import paho.mqtt.client as mqtt
 
-TOPIC = "heiwa4126/mqtt-learn1/paho/test1"
-BROKER = "test.mosquitto.org"
+TOPIC = "heiwa4126/mqtt-learn1/test1"
+BROKER = "localhost"
 
 
 def on_publish(client, userdata, mid, reason_code, properties):
@@ -35,7 +35,7 @@ mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
 mqttc.on_publish = on_publish
 
 mqttc.user_data_set(unacked_publish)
-mqttc.connect("test.mosquitto.org")
+mqttc.connect(BROKER)
 mqttc.loop_start()
 
 # Our application produce some messages

@@ -1,3 +1,21 @@
 {
-	"cSpell.words": ["mosquitto", "mqtt", "mqttc", "unacked"],
+	"cSpell.words": ["mosquitto", "mqtt", "mqttc", "SUBACK", "unacked"],
+	"chat.tools.terminal.autoApprove": {
+		"/^cd /home/heiwa/works/mqtt/mqtt-learn1 && timeout 8s poe sub1$/": {
+			"approve": true,
+			"matchCommandLine": true
+		},
+		"/^cd /home/heiwa/works/mqtt/mqtt-learn1 && poe pub1$/": {
+			"approve": true,
+			"matchCommandLine": true
+		},
+		"/^cd /home/heiwa/works/mqtt/mqtt-learn1 && docker compose -p mqtt-learn1 -f docker-compose\\.yml logs mqtt --tail 200$/": {
+			"approve": true,
+			"matchCommandLine": true
+		},
+		"/^cd /home/heiwa/works/mqtt/mqtt-learn1 && poe sub1$/": {
+			"approve": true,
+			"matchCommandLine": true
+		}
+	}
 }

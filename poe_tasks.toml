@@ -9,7 +9,14 @@ TRIVY_IGNORE = "--skip-dirs ./tmp,./xml"
 SHELL = "bash"
 
 [tasks]
-main = "pep440check"
+
+pub1 = "python src/mqtt_learn1/pub1.py"
+sub1 = "python src/mqtt_learn1/sub1.py"
+
+# ======== MQTT server (Broker)
+mqtt = "docker compose -p mqtt-learn1 -f docker-compose.yml up -d mqtt"
+logs = "docker compose -p mqtt-learn1 -f docker-compose.yml logs -f mqtt"
+down = "docker compose -p mqtt-learn1 -f docker-compose.yml down -v mqtt"
 
 # ======== tests
 test = "pytest -v --tb=short src"
