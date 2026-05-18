@@ -62,7 +62,7 @@ Eclipse Mosquitto の場合
 <https://mosquitto.org/man/mosquitto-8.html>
 の "Broker Status" の章を参照
 
-## すこし MQTT クライアントっぽい client2 設計書
+## すこし MQTT クライアントっぽい client2
 
-[client2 設計書](client2-spec.md)
-(長くなったんで別ファイルにしました)
+client2 はMQTTで5秒ごとに現在時刻を配信し、タイムゾーン変更コマンドに対応する。[client2 設計書](client2-spec.md)
+

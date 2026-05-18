@@ -1,9 +1,19 @@
+import json
+import threading
+import uuid
+
 import paho.mqtt.client as mqtt
 from paho.mqtt.client import Client, ConnectFlags, MQTTMessage
 from paho.mqtt.properties import Properties
 from paho.mqtt.reasoncodes import ReasonCode
 
-from mqtt_learn1.lib2 import BROKER, TOPIC
+from mqtt_learn1.lib2 import BROKER
+
+DEVICE_ID = "device1"
+TOPIC_TELEMETRY = f"clock/{DEVICE_ID}/telemetry"
+TOPIC_CMD = f"clock/{DEVICE_ID}/cmd"
+TOPIC_CMD_RESP = f"clock/{DEVICE_ID}/cmd/resp"
+TOPIC_STATUS = f"clock/{DEVICE_ID}/status"
 
 
 def on_subscribe(
@@ -58,8 +68,40 @@ def on_connect(
     else:
         # we should always subscribe from on_connect callback to be sure
         # our subscribed is persisted across re-connections.
-        # client.subscribe(SYSTEM_TOPIC)
-        client.subscribe(TOPIC, qos=1)
+        client.subscribe(TOPIC_TELEMETRY, qos=1)
+        client.subscribe(TOPIC_CMD_RESP, qos=1)
+
+
+def input_handler(client: mqtt.Client) -> None:
+    """キー入力を監視するスレッド"""
+    print("Commands: 'q' (quit), 't' (Asia/Tokyo), 'u' (UTC), 's' (get status)")
+    while True:
+        try:
+            key = input()
+            if key.lower() == "q":
+                print("Unsubscribing...")
+                client.unsubscribe([TOPIC_TELEMETRY, TOPIC_CMD_RESP])
+            elif key.lower() == "t":
+                # Asia/Tokyo に設定
+                payload = json.dumps({"req_id": str(uuid.uuid4()), "tz": "Asia/Tokyo"})
+                client.publish(TOPIC_CMD, payload, qos=1)
+                print(f"Published to {TOPIC_CMD}: {payload}")
+            elif key.lower() == "u":
+                # UTC に設定
+                payload = json.dumps({"req_id": str(uuid.uuid4()), "tz": "UTC"})
+                client.publish(TOPIC_CMD, payload, qos=1)
+                print(f"Published to {TOPIC_CMD}: {payload}")
+            elif key.lower() == "s":
+                # STATUS を取得 (retain されたメッセージを受け取る)
+                client.subscribe(TOPIC_STATUS, qos=1)
+                print(
+                    f"Subscribed to {TOPIC_STATUS} (retained message will be received)"
+                )
+        except EOFError:
+            break
+        except Exception as e:
+            print(f"Input handler error: {e}")
+            break
 
 
 mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
@@ -71,10 +113,14 @@ mqttc.on_unsubscribe = on_unsubscribe
 mqttc.user_data_set([])
 mqttc.connect(BROKER)
 
+# キー入力ハンドラーをデーモンスレッドで開始
+thread = threading.Thread(target=input_handler, args=(mqttc,), daemon=True)
+thread.start()
+
 try:
     mqttc.loop_forever()
 except KeyboardInterrupt:
     print("\nInterrupted by user, stopping...", flush=True)
-    mqttc.unsubscribe(TOPIC)  # これで on_unsubscribe が呼ばれるはず
+    mqttc.unsubscribe([TOPIC_TELEMETRY, TOPIC_CMD_RESP])
     print("Waiting for unsubscribe to complete...", flush=True)
     mqttc.loop_stop()
