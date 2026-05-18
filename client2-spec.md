@@ -146,3 +146,9 @@ cmd 受信
 - 値は IANA タイムゾーン ID を使用する(例: `UTC`, `Asia/Tokyo`, `America/New_York`)
 - 無効な値を受け取った場合は TZ を更新せず、`cmd/resp` に `status: "ERROR"` を返す
 - 初期値(デフォルト)は `UTC`
+
+## LWT (Last Will and Testament)
+
+本来なら Client 2 が Broker と切断された場合
+`clock/<ID>/status` を `{"tz": null}` で上書きするような処理が必要だろうが
+今回は省略。

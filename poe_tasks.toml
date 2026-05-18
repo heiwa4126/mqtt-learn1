@@ -13,6 +13,8 @@ SHELL = "bash"
 pub1 = "python src/mqtt_learn1/pub1.py"
 sub1 = "python src/mqtt_learn1/sub1.py"
 
+client2 = "python src/mqtt_learn1/client2.py -i device1"
+
 # ======== MQTT server (Broker)
 mqtt = "docker compose -p mqtt-learn1 -f docker/1/docker-compose.yml up -d mqtt"
 logs = "docker compose -p mqtt-learn1 -f docker/1/docker-compose.yml logs -f mqtt"
