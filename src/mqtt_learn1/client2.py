@@ -10,7 +10,7 @@ from paho.mqtt.client import Client, ConnectFlags, MQTTMessage
 from paho.mqtt.properties import Properties
 from paho.mqtt.reasoncodes import ReasonCode
 
-from mqtt_learn1.lib1 import BROKER
+from mqtt_learn1.lib2 import BROKER
 
 
 class TimezoneClock:
