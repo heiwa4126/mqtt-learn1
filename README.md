@@ -61,3 +61,8 @@ poe clients # 変化がないとpublishしてこない
 Eclipse Mosquitto の場合
 <https://mosquitto.org/man/mosquitto-8.html>
 の "Broker Status" の章を参照
+
+## すこし MQTT クライアントっぽい client2 設計書
+
+[client2 設計書](client2-spec.md)
+(長くなったんで別ファイルにしました)
