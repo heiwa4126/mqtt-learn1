@@ -21,6 +21,22 @@ def on_subscribe(
         print(f"Broker granted the following QoS: {reason_code_list[0].value}")
 
 
+def on_unsubscribe(
+    client: Client,
+    userdata: list[bytes],
+    mid: int,
+    reason_code_list: list[ReasonCode],
+    properties: Properties | None,
+) -> None:
+    # Be careful, the reason_code_list is only present in MQTTv5.
+    # In MQTTv3 it will always be empty
+    if len(reason_code_list) == 0 or not reason_code_list[0].is_failure:
+        print("unsubscribe succeeded (if SUBACK is received in MQTTv3 it success)")
+    else:
+        print(f"Broker replied with failure: {reason_code_list[0]}")
+    client.disconnect()
+
+
 def on_message(client: Client, userdata: list[bytes], message: MQTTMessage) -> None:
     # userdata is the structure we choose to provide, here it's a list()
     userdata.append(message.payload)
@@ -50,7 +66,15 @@ mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
 mqttc.on_connect = on_connect
 mqttc.on_message = on_message
 mqttc.on_subscribe = on_subscribe
+mqttc.on_unsubscribe = on_unsubscribe
 
 mqttc.user_data_set([])
 mqttc.connect(BROKER)
-mqttc.loop_forever()
+
+try:
+    mqttc.loop_forever()
+except KeyboardInterrupt:
+    print("\nInterrupted by user, stopping...", flush=True)
+    mqttc.unsubscribe(TOPIC)  # これで on_unsubscribe が呼ばれるはず
+    print("Waiting for unsubscribe to complete...", flush=True)
+    mqttc.loop_stop()

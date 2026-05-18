@@ -224,7 +224,7 @@ def main() -> None:
         while True:
             time.sleep(1)
     except KeyboardInterrupt:
-        print("\n[MAIN] Shutting down...")
+        print("\n[MAIN] Shutting down...", flush=True)
         client.disconnect()
 
 
