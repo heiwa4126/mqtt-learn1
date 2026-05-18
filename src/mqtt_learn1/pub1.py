@@ -19,23 +19,19 @@ def on_publish(
     try:
         userdata.remove(mid)
     except KeyError:
-        print("on_publish() is called with a mid not present in unacked_publish")
-        print("This is due to an unavoidable race-condition:")
-        print("* publish() return the mid of the message sent.")
-        print("* mid from publish() is added to unacked_publish by the main thread")
-        print("* on_publish() is called by the loop_start thread")
         print(
-            "While unlikely (because on_publish() will be called after a network round-trip),"
+            """on_publish() is called with a mid not present in unacked_publish
+This is due to an unavoidable race-condition:
+* publish() return the mid of the message sent.
+* mid from publish() is added to unacked_publish by the main thread
+* on_publish() is called by the loop_start thread
+While unlikely (because on_publish() will be called after a network round-trip),
+ this is a race-condition that COULD happen
+
+The best solution to avoid race-condition is using the msg_info from publish()
+We could also try using a list of acknowledged mid rather than removing from pending list,
+but remember that mid could be re-used !"""
         )
-        print(" this is a race-condition that COULD happen")
-        print("")
-        print(
-            "The best solution to avoid race-condition is using the msg_info from publish()"
-        )
-        print(
-            "We could also try using a list of acknowledged mid rather than removing from pending list,"
-        )
-        print("but remember that mid could be re-used !")
 
 
 unacked_publish: set[int] = set()

@@ -25,15 +25,6 @@ down = "docker compose -p mqtt-learn1 -f docker-compose.yml down -v mqtt"
 uptime = "mosquitto_sub -v -t '$SYS/broker/uptime' -h localhost -p 1883"
 clients = "mosquitto_sub -v -t '$SYS/broker/clients/connected' -h localhost -p 1883"
 
-# ======== tests
-test = "pytest -v --tb=short src"
-tests = ["test"]
-
-# ======== smoke tests
-smoke1 = "uv run --isolated --no-project --with dist/*.whl pep440check"
-smoke2 = "uv run --isolated --no-project --with dist/*.tar.gz pep440check"
-smoke_test = ["smoke1", "smoke2"]
-
 # ======== lint
 check = "ruff check ./src"
 # mypy = "mypy src"
@@ -52,20 +43,6 @@ audit = "uvx uv-secure"
 # clean = "rm -rf dist"
 clean = "python -c \"import shutil; shutil.rmtree('dist', ignore_errors=True)\""
 pack = "uv build"
-
-# ======== build
-build = ["audit", "build1"]
-
-build1 = [
-	"lint",
-	# "format",
-	"tests",
-	# "actionlint",
-	"clean",
-	"pack",
-	"smoke_test",
-]
-
 
 # ======== utils
 format_python = "ruff format"
