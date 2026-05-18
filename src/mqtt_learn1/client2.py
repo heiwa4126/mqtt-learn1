@@ -211,10 +211,12 @@ def main() -> None:
     parser.add_argument(
         "-i",
         "--id",
-        required=True,
-        help="Device ID for this clock client",
+        required=False,
+        default="device1",
+        help="Device ID for this clock client (default: device1)",
     )
     args = parser.parse_args()
+    print(f"Starting MQTT Clock Client with device ID: {args.id}")
 
     client = TimezoneClock(args.id)
     client.connect()

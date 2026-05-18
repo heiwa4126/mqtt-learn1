@@ -64,5 +64,19 @@ Eclipse Mosquitto の場合
 
 ## すこし MQTT クライアントっぽい client2
 
-client2 はMQTTで5秒ごとに現在時刻を配信し、タイムゾーン変更コマンドに対応する。[client2 設計書](client2-spec.md)
+client2 は MQTT で 5 秒ごとに現在時刻を配信し、タイムゾーン変更コマンドに対応する。[client2 設計書](client2-spec.md)
 
+client2 に対するクライアントが sub2 で、起動すると
+"Commands: 'q' (quit), 't' (Asia/Tokyo), 'u' (UTC), 's' (get status)"
+(q\[RET\]のようにリターンキー必要)のコマンドが使える。
+
+```sh
+poe mqtt
+poe logs
+# 別のshellで
+poe client2
+# 別のshellで
+poe sub2
+# サーバ止める
+poe down
+```
