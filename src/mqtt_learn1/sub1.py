@@ -62,7 +62,7 @@ def on_connect(
         # we should always subscribe from on_connect callback to be sure
         # our subscribed is persisted across re-connections.
         # client.subscribe(SYSTEM_TOPIC)
-        client.subscribe(TOPIC)
+        client.subscribe(TOPIC, qos=1)
 
 
 mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)

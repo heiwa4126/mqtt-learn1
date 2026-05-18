@@ -33,6 +33,18 @@ poe down
 
 2 個メッセージを受けたら、sub1 は終了する。
 
+また fan-out の実験として
+
+```sh
+poe sub1
+# 別のshellで
+poe sub1
+# 別のshellで
+poe pub1
+```
+
+もやってみて。
+
 ## Broker Status を mqtt-client 取得するサンプル
 
 事前に
