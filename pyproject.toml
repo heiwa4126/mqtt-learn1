@@ -5,7 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 authors = [{ name = "heiwa4126", email = "heiwa4126@gmail.com" }]
 requires-python = ">=3.12"
-dependencies = ["paho-mqtt>=2.1.0"]
+dependencies = ["paho-mqtt>=2.1.0", "tzdata>=2026.2"]
 
 [tool.pyrefly]
 project-includes = ["**/*.py*", "**/*.ipynb"]
