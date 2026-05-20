@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 
 import trustme
+
+_DEFAULT_SANS = ["localhost", "mqtt", "127.0.0.1"]
 
 ROOT = Path(__file__).resolve().parents[2]
 TLS_ROOT = ROOT / "var" / "tls"
@@ -27,15 +30,26 @@ def main() -> None:
         action="store_true",
         help="Overwrite existing files",
     )
+    parser.add_argument(
+        "--san",
+        metavar="NAME",
+        action="append",
+        help="Extra SAN (DNS name or IP) to add to the server cert. Can be repeated.",
+    )
     args = parser.parse_args()
+
+    # Collect SANs: defaults + BROKER_HOST env + --san args
+    sans: list[str] = list(_DEFAULT_SANS)
+    broker_host = os.getenv("BROKER_HOST")
+    if broker_host and broker_host not in sans:
+        sans.append(broker_host)
+    for extra in args.san or []:
+        if extra not in sans:
+            sans.append(extra)
 
     ca = trustme.CA()
 
-    server_cert = ca.issue_cert(
-        "localhost",
-        "mqtt",
-        "127.0.0.1",
-    )
+    server_cert = ca.issue_cert(*sans)
     client_cert = ca.issue_cert("device1")
 
     ca_cert_path = TLS_ROOT / "ca" / "ca.crt"
@@ -50,6 +64,7 @@ def main() -> None:
     write_pem(client_cert.cert_chain_pems[0], client_cert_path, args.force)
     write_pem(client_cert.private_key_pem, client_key_path, args.force)
 
+    print(f"Server SANs   : {', '.join(sans)}")
     print("Generated TLS materials:")
     print(f"- CA cert      : {ca_cert_path.relative_to(ROOT)}")
     print(f"- Server cert  : {server_cert_path.relative_to(ROOT)}")

@@ -104,3 +104,14 @@ poe mqtt_tls
 poe logs_tls
 # 止めるときは `poe down_tls` で
 ```
+
+で
+
+```sh
+# 別のshellで
+poe sub3
+# 別のshellで
+poe pub3
+```
+
+中身は pub1/sub1 と一緒

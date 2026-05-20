@@ -28,5 +28,4 @@ def setup_tls_client(
         tls_version=ssl.PROTOCOL_TLSv1_2,
         ciphers=None,
     )
-    # Skip hostname verification for self-signed dev certificates
-    client.tls_insecure_set(True)
+    client.tls_insecure_set(False)
