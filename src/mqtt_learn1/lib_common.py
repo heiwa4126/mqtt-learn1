@@ -24,8 +24,8 @@ def setup_tls_client(
         ca_certs=str(ca_certs),
         certfile=str(certfile),
         keyfile=str(keyfile),
-        cert_reqs=ssl.CERT_REQUIRED,
+        cert_reqs=ssl.CERT_REQUIRED,  # サーバー証明書を必須検証
         tls_version=ssl.PROTOCOL_TLSv1_2,
         ciphers=None,
     )
-    client.tls_insecure_set(False)
+    client.tls_insecure_set(False)  # ホスト名検証を有効(正しい状態)

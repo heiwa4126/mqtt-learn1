@@ -97,9 +97,9 @@ tz_info = ZoneInfo("UTC")
 ## ブローカをTLS対応にして、8883/TCPで待ち受ける
 
 ```sh
-poe tls_certs  # ./var 以下に CAとサーバ証明書を作る。証明書の上書きはしない。
-## ↑ ついでにクライアント証明書も作る
-## ↑ 上書きしたい場合は `poe tls_certs_force` で
+poe tls_certs  # ./var 以下に ローカルCAとサーバ証明書を作る
+## ↑ ついでにクライアント証明書も作ってる
+## ↑ 上書きしたい場合は `poe tls_certs_force` で強制再作成
 poe mqtt_tls
 poe logs_tls
 # 止めるときは `poe down_tls` で
@@ -115,3 +115,25 @@ poe pub3
 ```
 
 中身は pub1/sub1 と一緒
+
+### サーバ証明書のメモ
+
+以下のような SAN を持つ汎用サーバ証明書を作っています。
+
+```conf
+DNS: localhost
+DNS: *.nip.io
+DNS: *.sslip.io
+IP: 127.0.0.1
+IP: ::1
+```
+
+[nip\.io / sslip\.ioへようこそ](https://sslip.io/)
+
+.env の BROKER_HOST でローカル以外の IP を指定する場合は、
+`192-168-1-1.sslip.io` のように指定してください。
+(`.`を`-`に置き換える)
+
+### TODO
+
+クライアント証明書は最初から2～3個つくるように改造する。

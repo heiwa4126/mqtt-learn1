@@ -54,6 +54,7 @@ mqttc.on_unsubscribe = on_unsubscribe
 setup_tls_client(mqttc, CA_CERT, CLIENT_CERT, CLIENT_KEY)
 
 mqttc.user_data_set([])
+print(f"Connecting to broker {BROKER}:{PORT} with TLS...")
 mqttc.connect(BROKER, PORT)
 mqttc.loop_forever()
 print(f"Received the following message: {mqttc.user_data_get()}")

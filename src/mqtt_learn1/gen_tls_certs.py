@@ -6,7 +6,7 @@ from pathlib import Path
 
 import trustme
 
-_DEFAULT_SANS = ["localhost", "mqtt", "127.0.0.1"]
+_DEFAULT_SANS = ["*.nip.io", "*.sslip.io", "localhost", "127.0.0.1", "::1"]
 
 ROOT = Path(__file__).resolve().parents[2]
 TLS_ROOT = ROOT / "var" / "tls"

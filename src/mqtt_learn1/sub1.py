@@ -3,7 +3,7 @@ from paho.mqtt.client import Client, ConnectFlags, MQTTMessage
 from paho.mqtt.properties import Properties
 from paho.mqtt.reasoncodes import ReasonCode
 
-from mqtt_learn1.lib1 import BROKER, EXPECTED_MESSAGES, TOPIC
+from mqtt_learn1.lib1 import BROKER, EXPECTED_MESSAGES, PORT, TOPIC
 from mqtt_learn1.sub_lib import on_subscribe, on_unsubscribe
 
 
@@ -42,6 +42,7 @@ mqttc.on_subscribe = on_subscribe
 mqttc.on_unsubscribe = on_unsubscribe
 
 mqttc.user_data_set([])
-mqttc.connect(BROKER)
+print(f"Connecting to broker {BROKER}:{PORT} without TLS...")
+mqttc.connect(BROKER, PORT)
 mqttc.loop_forever()
 print(f"Received the following message: {mqttc.user_data_get()}")
