@@ -80,3 +80,16 @@ poe sub2
 # サーバ止める
 poe down
 ```
+
+## 注意: tzdata パッケージを消さないこと
+
+tzdataはコード中では参照されていないが、
+Windowsの場合
+
+```python
+from zoneinfo import ZoneInfo
+tz_info = ZoneInfo("UTC")
+```
+
+が
+`No time zone found with key UTC` 例外になる。
