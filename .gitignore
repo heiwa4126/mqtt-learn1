@@ -15,6 +15,7 @@ wheels/
 .mypy_cache/
 .pytest_cache/
 
+var/
 tmp/
 *.tmp
 *.dump

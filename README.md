@@ -83,8 +83,8 @@ poe down
 
 ## 注意: tzdata パッケージを消さないこと
 
-tzdataはコード中では参照されていないが、
-Windowsの場合
+tzdata はコード中では参照されていないが、
+Windows の場合
 
 ```python
 from zoneinfo import ZoneInfo
@@ -93,3 +93,14 @@ tz_info = ZoneInfo("UTC")
 
 が
 `No time zone found with key UTC` 例外になる。
+
+## ブローカをTLS対応にして、8883/TCPで待ち受ける
+
+```sh
+poe tls_certs  # ./var 以下に CAとサーバ証明書を作る。証明書の上書きはしない。
+## ↑ ついでにクライアント証明書も作る
+## ↑ 上書きしたい場合は `poe tls_certs_force` で
+poe mqtt_tls
+poe logs_tls
+# 止めるときは `poe down_tls` で
+```
