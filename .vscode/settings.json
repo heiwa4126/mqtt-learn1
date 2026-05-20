@@ -1,5 +1,6 @@
 {
 	"cSpell.words": ["mosquitto", "mqtt", "mqttc", "paho", "reasoncodes", "SUBACK", "unacked"],
+	"python.terminal.useEnvFile": true,
 	"chat.tools.terminal.autoApprove": {
 		"/^cd /home/heiwa/works/mqtt/mqtt-learn1 && timeout 8s poe sub1$/": {
 			"approve": true,

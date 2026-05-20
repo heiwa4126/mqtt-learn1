@@ -1,4 +1,4 @@
-# envfile = ".env"
+envfile = ".env"
 
 [executor]
 type = "uv"
