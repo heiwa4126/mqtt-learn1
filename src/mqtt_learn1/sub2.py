@@ -9,6 +9,8 @@ from paho.mqtt.properties import Properties
 from paho.mqtt.reasoncodes import ReasonCode
 
 from mqtt_learn1.lib2 import BROKER
+from mqtt_learn1.sub_lib import on_subscribe as _on_subscribe
+from mqtt_learn1.sub_lib import on_unsubscribe as _on_unsubscribe
 
 
 class MqttClockClient:
@@ -38,10 +40,7 @@ class MqttClockClient:
         reason_code_list: list[ReasonCode],
         properties: Properties | None,
     ) -> None:
-        if reason_code_list[0].is_failure:
-            print(f"Broker rejected you subscription: {reason_code_list[0]}")
-        else:
-            print(f"Broker granted the following QoS: {reason_code_list[0].value}")
+        _on_subscribe(client, userdata, mid, reason_code_list, properties)
 
     def on_unsubscribe(
         self,
@@ -51,11 +50,7 @@ class MqttClockClient:
         reason_code_list: list[ReasonCode],
         properties: Properties | None,
     ) -> None:
-        if len(reason_code_list) == 0 or not reason_code_list[0].is_failure:
-            print("unsubscribe succeeded (if SUBACK is received in MQTTv3 it success)")
-        else:
-            print(f"Broker replied with failure: {reason_code_list[0]}")
-        client.disconnect()
+        _on_unsubscribe(client, userdata, mid, reason_code_list, properties)
 
     def on_message(
         self, client: Client, userdata: list[bytes], message: MQTTMessage
