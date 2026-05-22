@@ -50,36 +50,32 @@ def main() -> None:
     ca = trustme.CA()
 
     server_cert = ca.issue_cert(*sans)
-    client_cert1 = ca.issue_cert("device1")
-    client_cert2 = ca.issue_cert("device2")
 
     ca_cert_path = TLS_ROOT / "ca" / "ca.crt"
     server_cert_path = TLS_ROOT / "server" / "server.crt"
     server_key_path = TLS_ROOT / "server" / "server.key"
 
-    client1_cert_path = TLS_ROOT / "client" / "device1.crt"
-    client1_key_path = TLS_ROOT / "client" / "device1.key"
-
-    client2_cert_path = TLS_ROOT / "client" / "device2.crt"
-    client2_key_path = TLS_ROOT / "client" / "device2.key"
-
     write_pem(ca.cert_pem, ca_cert_path, args.force)
     write_pem(server_cert.cert_chain_pems[0], server_cert_path, args.force)
     write_pem(server_cert.private_key_pem, server_key_path, args.force)
-    write_pem(client_cert1.cert_chain_pems[0], client1_cert_path, args.force)
-    write_pem(client_cert1.private_key_pem, client1_key_path, args.force)
-    write_pem(client_cert2.cert_chain_pems[0], client2_cert_path, args.force)
-    write_pem(client_cert2.private_key_pem, client2_key_path, args.force)
 
     print(f"Server SANs   : {', '.join(sans)}")
     print("Generated TLS materials:")
     print(f"- CA cert      : {ca_cert_path.relative_to(ROOT)}")
     print(f"- Server cert  : {server_cert_path.relative_to(ROOT)}")
     print(f"- Server key   : {server_key_path.relative_to(ROOT)}")
-    print(f"- Client cert  : {client1_cert_path.relative_to(ROOT)}")
-    print(f"- Client key   : {client1_key_path.relative_to(ROOT)}")
-    print(f"- Client cert  : {client2_cert_path.relative_to(ROOT)}")
-    print(f"- Client key   : {client2_key_path.relative_to(ROOT)}")
+
+    for device_number in range(1, 6):
+        id = f"device{device_number}"
+        client_cert = ca.issue_cert(id)
+        client_cert_path = TLS_ROOT / "client" / f"{id}.crt"
+        client_key_path = TLS_ROOT / "client" / f"{id}.key"
+
+        write_pem(client_cert.cert_chain_pems[0], client_cert_path, args.force)
+        write_pem(client_cert.private_key_pem, client_key_path, args.force)
+
+        print(f"- Client cert  : {client_cert_path.relative_to(ROOT)}")
+        print(f"- Client key   : {client_key_path.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":
