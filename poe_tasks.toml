@@ -24,6 +24,8 @@ tls_certs_force = "python src/mqtt_learn1/gen_tls_certs.py --force"
 
 server_cert = "openssl x509 -in ./var/tls/server/server.crt -text -noout"
 ca_cert = "openssl x509 -in ./var/tls/ca/ca.crt -text -noout"
+device1_cert = "openssl x509 -in ./var/tls/client/device1.crt -text -noout"
+device2_cert = "openssl x509 -in ./var/tls/client/device2.crt -text -noout"
 
 # ======== MQTT server (Broker)
 mqtt = "docker compose -p mqtt-learn1 -f docker/1/docker-compose.yml up -d mqtt"
