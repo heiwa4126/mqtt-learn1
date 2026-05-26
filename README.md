@@ -8,6 +8,8 @@
 
 ## 開始方法
 
+uv と Docker が必要。
+
 ```sh
 uv sync
 ```
@@ -96,10 +98,24 @@ tz_info = ZoneInfo("UTC")
 
 ## ブローカをTLS対応にして、8883/TCPで待ち受ける
 
+### サーバー証明書
+
+すでに `var/tls/` 以下に
+[trustme · PyPI](https://pypi.org/project/trustme/)
+で作った CA とサーバ証明書、5 台分のクライアント証明書があるので
+それをそのまま使ってください。
+
+CA の秘密キーがないので、署名はできません。使い捨て CA
+
+なんらかの事情で証明書セットを作り直したいときは
+
 ```sh
-poe tls_certs  # ./var 以下に ローカルCAとサーバ証明書を作る
-## ↑ ついでにクライアント証明書も作ってる
-## ↑ 上書きしたい場合は `poe tls_certs_force` で強制再作成
+poe poe tls_certs_force
+```
+
+### 実行
+
+```sh
 poe mqtt_tls
 poe logs_tls
 # 止めるときは `poe down_tls` で
@@ -114,7 +130,12 @@ poe sub3
 poe pub3
 ```
 
-中身は pub1/sub1 と一緒
+3 系統の中身は pub1/sub1 と一緒。終わったら
+
+```sh
+# ブローカを止める
+poe down_tls
+```
 
 ### サーバ証明書のメモ
 
@@ -133,7 +154,3 @@ IP: ::1
 .env の BROKER_HOST でローカル以外の IP を指定する場合は、
 `192-168-1-1.sslip.io` のように指定してください。
 (`.`を`-`に置き換える)
-
-### TODO
-
-クライアント証明書は最初から2～3個つくるように改造する。
