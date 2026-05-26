@@ -214,3 +214,29 @@ mqtt-tls4  | 1779783015: Warning: File /mosquitto/config/passwd owner is not mos
 mqtt-tls4  |
 mqtt-tls4  | 1779783015: Warning: File /mosquitto/config/passwd group is not mosquitto. Future versions will refuse to load this file.
 ```
+
+これ回避策がなさそうなので放置。named volume にすればいいかも。
+
+eclipse mosquotto に ユーザー/パスワード認証で接続すると
+
+> 1779783692: New client connected from 172.18.0.1:45278 as auto-148479D3-A076-74DE-6F3D-0CBDEBC76037 (p4, c1, k60, u'sub4').
+
+のようなログがのこる。sub4はユーザ名。のこりは
+
+### `p`
+
+- `p4` = MQTT 3.1.1
+- `p5` = MQTT 5.0
+
+### `c`
+
+- `c1` = clean session / clean start が有効
+- `c0` = セッションを保持したい接続
+
+### `k`
+
+- `k30` = keepalive 30秒
+- `k60` = keepalive 60秒
+- `k0` = keepalive 無効（クライアント依存で見かけることあり）
+
+MQTT で"クライアントID" というものがあるのか。
