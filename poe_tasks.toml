@@ -16,11 +16,15 @@ sub1 = "python src/mqtt_learn1/sub1.py"
 pub3 = "python src/mqtt_learn1/pub3.py"
 sub3 = "python src/mqtt_learn1/sub3.py"
 
+pub4 = "python src/mqtt_learn1/pub4.py"
+sub4 = "python src/mqtt_learn1/sub4.py"
+
 client2 = "python src/mqtt_learn1/client2.py -i device1"
 sub2 = "python src/mqtt_learn1/sub2.py -i device1"
 
 tls_certs = "python src/mqtt_learn1/gen_tls_certs.py"
 tls_certs_force = "python src/mqtt_learn1/gen_tls_certs.py --force"
+gen_passwd = "python src/mqtt_learn1/gen_passwd.py"
 
 ca_cert = "openssl x509 -in ./var/tls/ca/ca.crt -text -noout"
 server_cert = "openssl x509 -in ./var/tls/server/server.crt -text -noout"
@@ -37,6 +41,10 @@ down = "docker compose -p mqtt-learn1 -f docker/1/docker-compose.yml down -v mqt
 mqtt_tls = "docker compose -p mqtt-learn1-tls -f docker/tls/docker-compose.yml up -d mqtt"
 logs_tls = "docker compose -p mqtt-learn1-tls -f docker/tls/docker-compose.yml logs -f mqtt"
 down_tls = "docker compose -p mqtt-learn1-tls -f docker/tls/docker-compose.yml down -v mqtt"
+
+mqtt_tls4 = "docker compose -p mqtt-learn1-tls4 -f docker/tls4/docker-compose.yml up -d mqtt"
+logs_tls4 = "docker compose -p mqtt-learn1-tls4 -f docker/tls4/docker-compose.yml logs -f mqtt"
+down_tls4 = "docker compose -p mqtt-learn1-tls4 -f docker/tls4/docker-compose.yml down -v mqtt"
 
 # ======== MQTT client examples
 # needs `sudo apt install mosquitto-clients`
