@@ -45,6 +45,7 @@ down_tls = "docker compose -p mqtt-learn1-tls -f docker/tls/docker-compose.yml d
 mqtt_tls4 = "docker compose -p mqtt-learn1-tls4 -f docker/tls4/docker-compose.yml up -d mqtt"
 logs_tls4 = "docker compose -p mqtt-learn1-tls4 -f docker/tls4/docker-compose.yml logs -f mqtt"
 down_tls4 = "docker compose -p mqtt-learn1-tls4 -f docker/tls4/docker-compose.yml down -v mqtt"
+restart_tls4 = "docker compose -p mqtt-learn1-tls4 -f docker/tls4/docker-compose.yml restart mqtt"
 
 # ======== MQTT client examples
 # needs `sudo apt install mosquitto-clients`

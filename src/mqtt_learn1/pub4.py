@@ -1,3 +1,4 @@
+import os
 import time
 
 import paho.mqtt.client as mqtt
@@ -5,7 +6,11 @@ from paho.mqtt.client import Client
 from paho.mqtt.properties import Properties
 from paho.mqtt.reasoncodes import ReasonCode
 
-from mqtt_learn1.lib4 import BROKER, MQTT_PASSWORD, MQTT_USERNAME, PORT, TOPIC
+from mqtt_learn1.lib4 import BROKER, PORT, TOPIC
+
+# 環境変数が未定義なら死ぬように, os.getenv() ではなく os.environ[] を使う
+MQTT_USERNAME = os.environ["PUB4_USER"]
+MQTT_PASSWORD = os.environ["PUB4_PASS"]
 
 
 def on_publish(

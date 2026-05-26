@@ -14,26 +14,26 @@
 		"sslip",
 		"SUBACK",
 		"trustme",
-		"unacked",
+		"unacked"
 	],
 	"python.terminal.useEnvFile": false,
 	"chat.tools.terminal.autoApprove": {
 		"/.*mqtt-learn1 && timeout 8s poe sub1$/": {
 			"approve": true,
-			"matchCommandLine": true,
+			"matchCommandLine": true
 		},
 		"/.*mqtt-learn1 && poe .+$/": {
 			"approve": true,
-			"matchCommandLine": true,
+			"matchCommandLine": true
 		},
 		"/.*mqtt-learn1 && docker compose -p mqtt-learn1 -f docker-compose\\.yml logs mqtt --tail 200$/": {
 			"approve": true,
-			"matchCommandLine": true,
+			"matchCommandLine": true
 		},
 		"/.*mqtt-learn1 && timeout 5s poe sub3 2>&1 \\|\\| true$/": {
 			"approve": true,
-			"matchCommandLine": true,
+			"matchCommandLine": true
 		},
-		"docker compose": true,
-	},
+		"docker compose": true
+	}
 }

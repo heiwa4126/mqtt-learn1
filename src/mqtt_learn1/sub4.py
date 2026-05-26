@@ -1,3 +1,5 @@
+import os
+
 import paho.mqtt.client as mqtt
 from paho.mqtt.client import Client, ConnectFlags, MQTTMessage
 from paho.mqtt.properties import Properties
@@ -6,12 +8,14 @@ from paho.mqtt.reasoncodes import ReasonCode
 from mqtt_learn1.lib4 import (
     BROKER,
     EXPECTED_MESSAGES,
-    MQTT_PASSWORD,
-    MQTT_USERNAME,
     PORT,
     TOPIC,
 )
 from mqtt_learn1.sub_lib import on_subscribe, on_unsubscribe
+
+# 環境変数が未定義なら死ぬように, os.getenv() ではなく os.environ[] を使う
+MQTT_USERNAME = os.environ["SUB4_USER"]
+MQTT_PASSWORD = os.environ["SUB4_PASS"]
 
 
 def on_message(client: Client, userdata: list[bytes], message: MQTTMessage) -> None:
