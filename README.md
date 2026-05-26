@@ -155,4 +155,62 @@ IP: ::1
 `192-168-1-1.sslip.io` のように指定してください。
 (`.`を`-`に置き換える)
 
-##
+## 第4系統 - MQTT over TLS ユーザ名/パスワードつき
+
+### 準備
+
+pub4とsub4で使うユーザ名/パスワードを以下の環境変数経由で設定する。
+`.env` に書くことを想定。
+
+```conf
+# 例。
+PUB4_USER=mqtt_pub4
+PUB4_PASS=xxxxxxxxxxxxxxxxxxx
+SUB4_USER=mqtt_sub4
+SUB4_PASS=zzzzzzzzzzzzzzzzzzz
+```
+
+設定後
+
+```sh
+scripts/gen_passwdfile.sh
+```
+
+を実行すると、Dockerイメージ内の `mosquitto_passwd` コマンドを使って
+`docker/tls4/mosquitto/config` ファイルを生成します。
+
+### 実行
+
+```sh
+poe mqtt_tls4
+poe logs_tls4
+```
+
+で
+
+```sh
+# 別のshellで
+poe sub4
+# 別のshellで
+poe pub4
+```
+
+中身は pub1/sub1 と一緒。終わったら
+
+```sh
+# ブローカを止める
+poe down_tls4
+```
+
+### メモ
+
+ログにこんな警告が出る。
+
+```text
+mqtt-tls4  | 1779783015: Warning: File /mosquitto/config/passwd has world readable permissions. Future versions will refuse to load this file.
+mqtt-tls4  | To fix this, use `chmod 0700 /mosquitto/config/passwd`.
+mqtt-tls4  |
+mqtt-tls4  | 1779783015: Warning: File /mosquitto/config/passwd owner is not mosquitto. Future versions will refuse to load this file.To fix this, use `chown mosquitto /mosquitto/config/passwd`.
+mqtt-tls4  |
+mqtt-tls4  | 1779783015: Warning: File /mosquitto/config/passwd group is not mosquitto. Future versions will refuse to load this file.
+```
