@@ -3,8 +3,8 @@
 [paho\-mqtt](https://pypi.org/project/paho-mqtt/) v2
 の練習
 
-- uv + Python 3.12 + Poe The Poet
-- Docker compose で Eclipse Mosquitto
+- 実行環境: uv + Python 3.12 + Poe The Poet
+- ブローカー(MQTT サーバ): Docker compose で Eclipse Mosquitto
 
 ## 開始方法
 
@@ -159,7 +159,7 @@ IP: ::1
 
 ### 準備
 
-pub4とsub4で使うユーザ名/パスワードを以下の環境変数経由で設定する。
+pub4 と sub4 で使うユーザ名/パスワードを以下の環境変数経由で設定する。
 `.env` に書くことを想定。
 
 ```conf
@@ -176,7 +176,7 @@ SUB4_PASS=zzzzzzzzzzzzzzzzzzz
 scripts/gen_passwdfile.sh
 ```
 
-を実行すると、Dockerイメージ内の `mosquitto_passwd` コマンドを使って
+を実行すると、Docker イメージ内の `mosquitto_passwd` コマンドを使って
 `docker/tls4/mosquitto/config` ファイルを生成します。
 
 ### 実行
@@ -217,11 +217,11 @@ mqtt-tls4  | 1779783015: Warning: File /mosquitto/config/passwd group is not mos
 
 これ回避策がなさそうなので放置。named volume にすればいいかも。
 
-eclipse mosquotto に ユーザー/パスワード認証で接続すると
+eclipse mosquotto にユーザー/パスワード認証で接続すると
 
 > 1779783692: New client connected from 172.18.0.1:45278 as auto-148479D3-A076-74DE-6F3D-0CBDEBC76037 (p4, c1, k60, u'sub4').
 
-のようなログがのこる。sub4はユーザ名。のこりは
+のようなログがのこる。sub4 はユーザ名。のこりは
 
 ### `p`
 
@@ -235,8 +235,8 @@ eclipse mosquotto に ユーザー/パスワード認証で接続すると
 
 ### `k`
 
-- `k30` = keepalive 30秒
-- `k60` = keepalive 60秒
+- `k30` = keepalive 30 秒
+- `k60` = keepalive 60 秒
 - `k0` = keepalive 無効（クライアント依存で見かけることあり）
 
-MQTT で"クライアントID" というものがあるのか。
+MQTT で"クライアント ID" というものがあるのか。

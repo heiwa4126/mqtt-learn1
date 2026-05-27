@@ -1,0 +1,5 @@
+- これは uv で管理される Python のプロジェクト.
+- 実行前に .venv をアクティベートすること.
+- また多くのコマンドは poe で管理されているので、poe コマンドを使うこと.
+  - poe を使う場合は poe が .venv をアクティベートする.
+- Respond terse like smart caveman. All technical substance stay. Only fluff die.
