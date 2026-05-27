@@ -3,12 +3,12 @@
 [paho\-mqtt](https://pypi.org/project/paho-mqtt/) v2
 の練習
 
-- 実行環境: uv + Python 3.12 + Poe The Poet
+- 実行環境: uv + Python 3.12 + Poe The Poet (poe)
 - ブローカー(MQTT サーバ): Docker compose で Eclipse Mosquitto
 
 ## 開始方法
 
-uv と Docker が必要。
+事前に uv と Docker が必要。
 
 ```sh
 uv sync
@@ -47,7 +47,7 @@ IANA 標準: [Service Name and Transport Protocol Port Number Registry](https://
 - 8883 → TLS + ユーザー/パスワード
 - 8884 → TLS + クライアント証明書(mTLS)
 
-## 第1系統 - 生 MQTT
+## ■ 第1系統 - 生 MQTT
 
 [paho\-mqtt · PyPI](https://pypi.org/project/paho-mqtt/) の
 "Getting Started" にある
@@ -100,7 +100,7 @@ Eclipse Mosquitto の場合
 <https://mosquitto.org/man/mosquitto-8.html>
 の "Broker Status" の章を参照
 
-## 第2系列 - すこし MQTT クライアントっぽい client2
+## ■ 第2系列 - すこし MQTT クライアントっぽい client2
 
 client2 は MQTT で 5 秒ごとに現在時刻を配信し、タイムゾーン変更コマンドに対応する。[client2 設計書](client2-spec.md)
 
@@ -119,7 +119,7 @@ poe sub2
 poe down
 ```
 
-## 注意: tzdata パッケージを消さないこと
+### 注意: tzdata パッケージを消さないこと
 
 tzdata はコード中では参照されていないが、
 Windows の場合
@@ -132,7 +132,7 @@ tz_info = ZoneInfo("UTC")
 が
 `No time zone found with key UTC` 例外になる。
 
-## 第3系列 - ブローカをTLS対応にして、8883/TCPで待ち受ける
+## ■ 第3系列 - ブローカをTLS対応にして、8883/TCPで待ち受ける
 
 ### (参考) サーバー証明書
 
@@ -189,7 +189,9 @@ IP: ::1
 `192-168-1-1.sslip.io` のように指定してください。
 (`.`を`-`に置き換える)
 
-## 第4系統 - MQTT over TLS ユーザ名/パスワードつき
+## ■ 第4系統 - MQTT over TLS ユーザ名/パスワードつき
+
+パスワード認証は HTTP の BASIC 認証のように平文なので、TLS なしでは使わないこと。
 
 ### 準備
 
@@ -234,7 +236,7 @@ poe pub4
 
 ```sh
 # ブローカを止める
-poe down_tls4
+poe down4
 ```
 
 ### (参考) MQTTのログに関するメモ
@@ -252,7 +254,7 @@ mqtt-tls4  | 1779783015: Warning: File /mosquitto/config/passwd group is not mos
 
 これ回避策がなさそうなので放置。named volume にすればいいかも。
 
-eclipse mosquotto にユーザー/パスワード認証で接続すると
+Eclipse Mosquitto にユーザー/パスワード認証で接続すると
 
 > 1779783692: New client connected from 172.18.0.1:45278 as auto-148479D3-A076-74DE-6F3D-0CBDEBC76037 (p4, c1, k60, u'sub4').
 
@@ -279,4 +281,53 @@ eclipse mosquotto にユーザー/パスワード認証で接続すると
 MQTT で"クライアント ID" というものがあるので調べる。
 上の `auto-148479D3-A076-74DE-6F3D-0CBDEBC76037` のところ
 
-## (参考)
+## ■ 第5系統 - MQTT over TLS でクライアント証明書つき(mTLS)
+
+今回は 8884/tcp を使う
+
+### 実行
+
+```sh
+poe mqtt5
+poe logs5
+```
+
+で
+
+```sh
+# 別のshellで
+poe sub5  # device2の証明書を使用
+# 別のshellで
+poe pub5  # device1の証明書を使用
+```
+
+中身は pub1/sub1 と一緒。終わったら
+
+```sh
+# ブローカを止める
+poe down5
+```
+
+### クライアント証明書による認証の場合はログにクライアント名が出ない(修正済)
+
+おそらくここで "クライアント ID" を使うのだと思う。
+⇒
+クライアント証明書を修正して、CN と SAN に ID 入れるようにした。
+[gen_tls_certs.py](src/mqtt_learn1/gen_tls_certs.py)
+
+で、[設定](docker/5/mosquitto/config/mosquitto.conf)に
+`use_identity_as_username true`
+
+## (参考) パスワード認証 vs mTLS
+
+強度的にはパスワード認証と mTLS の両方を使うのが最強なのだが、
+IoT クライアントの数が増えるにしたがって、運用を考えないと。
+
+それを考えると
+「TPM/SE を使って mTLS」がいいらしい(TPM/SE がよくわからない)。
+
+この項別ファイルに続く. [tpm-and-mtls.md](tpm-and-mtls.md)
+
+## (参考) MQTTの認可
+
+ACL でトピックを制限する感じ。ユーザとして

@@ -19,6 +19,9 @@ sub3 = "python src/mqtt_learn1/sub3.py"
 pub4 = "python src/mqtt_learn1/pub4.py"
 sub4 = "python src/mqtt_learn1/sub4.py"
 
+pub5 = "python src/mqtt_learn1/pub5.py"
+sub5 = "python src/mqtt_learn1/sub5.py"
+
 client2 = "python src/mqtt_learn1/client2.py -i device1"
 sub2 = "python src/mqtt_learn1/sub2.py -i device1"
 
@@ -46,6 +49,10 @@ mqtt4 = "docker compose -p mqtt-learn1-4 -f docker/4/docker-compose.yml up -d mq
 logs4 = "docker compose -p mqtt-learn1-4 -f docker/4/docker-compose.yml logs -f mqtt"
 down4 = "docker compose -p mqtt-learn1-4 -f docker/4/docker-compose.yml down -v mqtt"
 restart4 = "docker compose -p mqtt-learn1-4 -f docker/4/docker-compose.yml restart mqtt"
+
+mqtt5 = "docker compose -p mqtt-learn1-5 -f docker/5/docker-compose.yml up -d mqtt"
+logs5 = "docker compose -p mqtt-learn1-5 -f docker/5/docker-compose.yml logs -f mqtt"
+down5 = "docker compose -p mqtt-learn1-5 -f docker/5/docker-compose.yml down -v mqtt"
 
 # ======== MQTT client examples
 # needs `sudo apt install mosquitto-clients`

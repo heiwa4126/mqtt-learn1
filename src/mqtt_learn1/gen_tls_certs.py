@@ -66,10 +66,12 @@ def main() -> None:
     print(f"- Server key   : {server_key_path.relative_to(ROOT)}")
 
     for device_number in range(1, 6):
-        id = f"device{device_number}"
-        client_cert = ca.issue_cert(id)
-        client_cert_path = TLS_ROOT / "client" / f"{id}.crt"
-        client_key_path = TLS_ROOT / "client" / f"{id}.key"
+        client_id = f"device{device_number}"
+        client_cert = ca.issue_cert(
+            client_id, common_name=client_id
+        )  # CNに追加するだけでSANにも入る
+        client_cert_path = TLS_ROOT / "client" / f"{client_id}.crt"
+        client_key_path = TLS_ROOT / "client" / f"{client_id}.key"
 
         write_pem(client_cert.cert_chain_pems[0], client_cert_path, args.force)
         write_pem(client_cert.private_key_pem, client_key_path, args.force)
