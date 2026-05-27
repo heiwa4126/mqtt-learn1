@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 
 BROKER = os.getenv("BROKER_HOST", "127.0.0.1")
-PORT = 8884
+PORT = 8883
 TOPIC = "heiwa4126/mqtt-learn1/test4"
 EXPECTED_MESSAGES = 2
 

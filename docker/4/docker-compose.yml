@@ -3,9 +3,9 @@ services:
     image: eclipse-mosquitto
     container_name: mqtt4
     expose:
-      - 8884
+      - 8883
     ports:
-      - 8884:8884
+      - 8883:8883
     restart: no
     volumes:
       - ./mosquitto/config:/mosquitto/config

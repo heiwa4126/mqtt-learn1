@@ -24,6 +24,29 @@ cp .env-template .env
 して中身を編集。
 おおむねそのままで使用可能。
 
+## (参考) MQTTの使う代表的なポート
+
+IANA 標準: [Service Name and Transport Protocol Port Number Registry](https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml?search=mqtt)
+
+| ポート   | 用途                      | 備考                      |
+| -------- | ------------------------- | ------------------------- |
+| 1883/tcp | MQTT (平文)               | 非暗号。LAN/閉域向け      |
+| 8883/tcp | MQTT over TLS             | 標準TLS。インターネット用 |
+| 8083/tcp | MQTT over WebSocket (ws)  | ブラウザ接続用、非暗号    |
+| 8084/tcp | MQTT over WebSocket (wss) | WebSocket + TLS           |
+| 443/tcp  | MQTT over WebSocket (wss) | HTTPS共用。FW回避用途多い |
+
+8884/tcp は **標準ポートではないが実務でよく使う「TLS別用途ポート」**
+
+| ポート   | 用途                       | 備考                       |
+| -------- | -------------------------- | -------------------------- |
+| 8884/tcp | MQTT over TLS (別リスナー) | 認証方式分離用に使う例多い |
+
+典型パターン:
+
+- 8883 → TLS + ユーザー/パスワード
+- 8884 → TLS + クライアント証明書(mTLS)
+
 ## 第1系統 - 生 MQTT
 
 [paho\-mqtt · PyPI](https://pypi.org/project/paho-mqtt/) の
@@ -249,7 +272,7 @@ eclipse mosquotto にユーザー/パスワード認証で接続すると
 
 - `k30` = keepalive 30 秒
 - `k60` = keepalive 60 秒
-- `k0` = keepalive 無効（クライアント依存で見かけることあり）
+- `k0` = keepalive 無効(クライアント依存で見かけることあり)
 
 #### TODO: クライアント ID
 
