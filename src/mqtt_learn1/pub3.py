@@ -2,7 +2,7 @@ import time
 
 import paho.mqtt.client as mqtt
 
-from mqtt_learn1.lib3 import BROKER, CA_CERT, CLIENT_CERT, CLIENT_KEY, PORT, TOPIC
+from mqtt_learn1.lib3 import BROKER, CA_CERT, PORT, TOPIC
 from mqtt_learn1.lib_common import setup_tls_client
 from mqtt_learn1.sub_lib import on_publish
 
@@ -11,7 +11,7 @@ mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
 mqttc.on_publish = on_publish
 
 # Setup TLS
-setup_tls_client(mqttc, CA_CERT, CLIENT_CERT, CLIENT_KEY)
+setup_tls_client(mqttc, CA_CERT)
 
 mqttc.user_data_set(unacked_publish)
 mqttc.connect(BROKER, PORT)

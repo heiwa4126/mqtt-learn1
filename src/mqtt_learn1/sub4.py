@@ -36,6 +36,7 @@ mqttc.username_pw_set(MQTT_USERNAME, MQTT_PASSWORD)
 
 mqttc.user_data_set([])
 print(f"Connecting to broker {BROKER}:{PORT} with username/password auth...")
+
 mqttc.connect(BROKER, PORT)
 mqttc.loop_forever()
 print(f"Received the following message: {mqttc.user_data_get()}")
