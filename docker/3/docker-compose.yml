@@ -8,5 +8,5 @@ services:
       - 8883:8883
     restart: no
     volumes:
-      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/config:/mosquitto/config:ro
       - ../../var/tls:/mosquitto/tls:ro
