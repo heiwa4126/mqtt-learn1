@@ -93,6 +93,13 @@ trivy-sbom = "trivy fs ${TRIVY_IGNORE} --scanners vuln --format cyclonedx --outp
 trivy-sbom-spdx = "trivy fs ${TRIVY_IGNORE} --scanners vuln --format spdx-json --output sbom.spdx.json ."
 sbom = ["requirements", "trivy-sbom", "trivy-sbom-spdx"]
 
+cloc.shell = "cloc $(git ls-files|grep -Fv pnpm-lock.yaml)"
+lizard = "lizard -EDuplicate -w ."
+lizard_all = "lizard -EDuplicate ."
+smells_all = "qlty smells --all --quiet"
+qlty = "qlty metrics --functions --all --quiet"
+
+
 [tasks.testpypi]
 help = "Build and upload to Test PyPI"
 envfile = ".env"

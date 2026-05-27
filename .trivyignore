@@ -1,2 +1,2 @@
-./var/tsl
+var/tls/server/server.key
 .env-template

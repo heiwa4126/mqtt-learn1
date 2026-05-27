@@ -2,46 +2,22 @@ import os
 import time
 
 import paho.mqtt.client as mqtt
-from paho.mqtt.client import Client
-from paho.mqtt.properties import Properties
-from paho.mqtt.reasoncodes import ReasonCode
 
-from mqtt_learn1.lib4 import BROKER, PORT, TOPIC
+from mqtt_learn1.lib4 import BROKER, CA_CERT, PORT, TOPIC
+from mqtt_learn1.lib_common import setup_tls_client
+from mqtt_learn1.sub_lib import on_publish
 
 # 環境変数が未定義なら死ぬように, os.getenv() ではなく os.environ[] を使う
 MQTT_USERNAME = os.environ["PUB4_USER"]
 MQTT_PASSWORD = os.environ["PUB4_PASS"]
 
 
-def on_publish(
-    client: Client,
-    userdata: set[int],
-    mid: int,
-    reason_code: ReasonCode,
-    properties: Properties,
-) -> None:
-    # reason_code and properties will only be present in MQTTv5. It's always unset in MQTTv3
-    try:
-        userdata.remove(mid)
-    except KeyError:
-        print(
-            """on_publish() is called with a mid not present in unacked_publish
-This is due to an unavoidable race-condition:
-* publish() return the mid of the message sent.
-* mid from publish() is added to unacked_publish by the main thread
-* on_publish() is called by the loop_start thread
-While unlikely (because on_publish() will be called after a network round-trip),
- this is a race-condition that COULD happen
-
-The best solution to avoid race-condition is using the msg_info from publish()
-We could also try using a list of acknowledged mid rather than removing from pending list,
-but remember that mid could be re-used !"""
-        )
-
-
 unacked_publish: set[int] = set()
 mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
 mqttc.on_publish = on_publish
+
+# Setup TLS
+setup_tls_client(mqttc, CA_CERT)
 
 # Setup username and password authentication
 mqttc.username_pw_set(MQTT_USERNAME, MQTT_PASSWORD)
