@@ -12,30 +12,36 @@ uv と Docker が必要。
 
 ```sh
 uv sync
+. .venv/bin/activate
 ```
 
-## テスト1
+また
+
+```sh
+cp .env-template .env
+```
+
+して中身を編集。
+おおむねそのままで使用可能。
+
+## 第1系統 - 生 MQTT
 
 [paho\-mqtt · PyPI](https://pypi.org/project/paho-mqtt/) の
 "Getting Started" にある
-Subscriber example / publisher example をほぼそのまま
-
-Eclipse Mosquitto をアノニマス接続で、生の MQTT
+Subscriber example / publisher example ほぼそのまま。
 
 ```sh
-poe mqtt
-poe logs
+poe mqtt # MQTTブローカ起動
+poe logs # ログを標準出力に表示
 # 別のshellで
 poe sub1
 # 別のshellで
 poe pub1
-# サーバ止める
-poe down
 ```
 
 2 個メッセージを受けたら、sub1 は終了する。
 
-また fan-out の実験として
+また fan-out (pub が 1 個で、受ける sub が 2 個以上) の実験として
 
 ```sh
 poe sub1
@@ -46,12 +52,18 @@ poe pub1
 ```
 
 もやってみて。
+終わったら
 
-## Broker Status を mqtt-client 取得するサンプル
+```sh
+poe down # MQTTブローカ止める
+```
+
+## (参考) Broker Status を mqtt-client 取得する実験
 
 事前に
 `sudo apt install mosquitto-clients`
 が必要
+(TODO: コンテナ内の mosquitto_sub を使ってみる)
 
 ```sh
 poe mqtt
@@ -60,11 +72,12 @@ poe uptime  # ctrl+cで終了。デフォルトでは10秒ごとにpublishして
 poe clients # 変化がないとpublishしてこない
 ```
 
+`$SYS/` のトピックはブローカによって異なる。
 Eclipse Mosquitto の場合
 <https://mosquitto.org/man/mosquitto-8.html>
 の "Broker Status" の章を参照
 
-## すこし MQTT クライアントっぽい client2
+## 第2系列 - すこし MQTT クライアントっぽい client2
 
 client2 は MQTT で 5 秒ごとに現在時刻を配信し、タイムゾーン変更コマンドに対応する。[client2 設計書](client2-spec.md)
 
@@ -96,9 +109,9 @@ tz_info = ZoneInfo("UTC")
 が
 `No time zone found with key UTC` 例外になる。
 
-## ブローカをTLS対応にして、8883/TCPで待ち受ける
+## 第3系列 - ブローカをTLS対応にして、8883/TCPで待ち受ける
 
-### サーバー証明書
+### (参考) サーバー証明書
 
 すでに `var/tls/` 以下に
 [trustme · PyPI](https://pypi.org/project/trustme/)
@@ -116,9 +129,8 @@ poe poe tls_certs_force
 ### 実行
 
 ```sh
-poe mqtt_tls
-poe logs_tls
-# 止めるときは `poe down_tls` で
+poe mqtt3
+poe logs3
 ```
 
 で
@@ -133,11 +145,10 @@ poe pub3
 3 系統の中身は pub1/sub1 と一緒。終わったら
 
 ```sh
-# ブローカを止める
-poe down_tls
+poe down3	# ブローカを止める
 ```
 
-### サーバ証明書のメモ
+### (参考) サーバ証明書のメモ
 
 以下のような SAN を持つ汎用サーバ証明書を作っています。
 
@@ -149,7 +160,7 @@ IP: 127.0.0.1
 IP: ::1
 ```
 
-[nip\.io / sslip\.ioへようこそ](https://sslip.io/)
+参考: [nip\.io / sslip\.ioへようこそ](https://sslip.io/)
 
 .env の BROKER_HOST でローカル以外の IP を指定する場合は、
 `192-168-1-1.sslip.io` のように指定してください。
@@ -177,13 +188,13 @@ scripts/gen_passwdfile.sh
 ```
 
 を実行すると、Docker イメージ内の `mosquitto_passwd` コマンドを使って
-`docker/tls4/mosquitto/config` ファイルを生成します。
+`docker/4/mosquitto/config` ファイルを生成します。
 
 ### 実行
 
 ```sh
-poe mqtt_tls4
-poe logs_tls4
+poe mqtt4
+poe logs4
 ```
 
 で
@@ -202,7 +213,7 @@ poe pub4
 poe down_tls4
 ```
 
-### メモ
+### (参考) MQTTのログに関するメモ
 
 ログにこんな警告が出る。
 
@@ -223,20 +234,23 @@ eclipse mosquotto にユーザー/パスワード認証で接続すると
 
 のようなログがのこる。sub4 はユーザ名。のこりは
 
-### `p`
+#### `p`
 
 - `p4` = MQTT 3.1.1
 - `p5` = MQTT 5.0
 
-### `c`
+#### `c`
 
 - `c1` = clean session / clean start が有効
 - `c0` = セッションを保持したい接続
 
-### `k`
+#### `k`
 
 - `k30` = keepalive 30 秒
 - `k60` = keepalive 60 秒
 - `k0` = keepalive 無効（クライアント依存で見かけることあり）
 
-MQTT で"クライアント ID" というものがあるのか。
+#### TODO: クライアント ID
+
+MQTT で"クライアント ID" というものがあるので調べる。
+上の `auto-148479D3-A076-74DE-6F3D-0CBDEBC76037` のところ

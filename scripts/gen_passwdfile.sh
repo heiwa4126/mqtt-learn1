@@ -7,7 +7,7 @@ set -euo pipefail
 
 source .env
 
-PASSWORD_DIR="$PWD/docker/tls4/mosquitto/config"
+PASSWORD_DIR="$PWD/docker/4/mosquitto/config"
 rm -rf "$PASSWORD_DIR/passwd"
 
 docker run --rm \

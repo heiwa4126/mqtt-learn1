@@ -38,14 +38,14 @@ mqtt = "docker compose -p mqtt-learn1 -f docker/1/docker-compose.yml up -d mqtt"
 logs = "docker compose -p mqtt-learn1 -f docker/1/docker-compose.yml logs -f mqtt"
 down = "docker compose -p mqtt-learn1 -f docker/1/docker-compose.yml down -v mqtt"
 
-mqtt_tls = "docker compose -p mqtt-learn1-tls -f docker/tls/docker-compose.yml up -d mqtt"
-logs_tls = "docker compose -p mqtt-learn1-tls -f docker/tls/docker-compose.yml logs -f mqtt"
-down_tls = "docker compose -p mqtt-learn1-tls -f docker/tls/docker-compose.yml down -v mqtt"
+mqtt3 = "docker compose -p mqtt-learn1-3 -f docker/3/docker-compose.yml up -d mqtt"
+logs3 = "docker compose -p mqtt-learn1-3 -f docker/3/docker-compose.yml logs -f mqtt"
+down3 = "docker compose -p mqtt-learn1-3 -f docker/3/docker-compose.yml down -v mqtt"
 
-mqtt_tls4 = "docker compose -p mqtt-learn1-tls4 -f docker/tls4/docker-compose.yml up -d mqtt"
-logs_tls4 = "docker compose -p mqtt-learn1-tls4 -f docker/tls4/docker-compose.yml logs -f mqtt"
-down_tls4 = "docker compose -p mqtt-learn1-tls4 -f docker/tls4/docker-compose.yml down -v mqtt"
-restart_tls4 = "docker compose -p mqtt-learn1-tls4 -f docker/tls4/docker-compose.yml restart mqtt"
+mqtt4 = "docker compose -p mqtt-learn1-4 -f docker/4/docker-compose.yml up -d mqtt"
+logs4 = "docker compose -p mqtt-learn1-4 -f docker/4/docker-compose.yml logs -f mqtt"
+down4 = "docker compose -p mqtt-learn1-4 -f docker/4/docker-compose.yml down -v mqtt"
+restart4 = "docker compose -p mqtt-learn1-4 -f docker/4/docker-compose.yml restart mqtt"
 
 # ======== MQTT client examples
 # needs `sudo apt install mosquitto-clients`
