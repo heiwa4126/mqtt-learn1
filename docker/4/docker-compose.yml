@@ -1,7 +1,7 @@
 services:
   mqtt:
     image: eclipse-mosquitto
-    container_name: mqtt-tls4
+    container_name: mqtt4
     expose:
       - 8884
     ports:
@@ -9,3 +9,4 @@ services:
     restart: no
     volumes:
       - ./mosquitto/config:/mosquitto/config
+      - ../../var/tls:/mosquitto/tls:ro

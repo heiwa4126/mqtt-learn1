@@ -1,7 +1,7 @@
 services:
   mqtt:
     image: eclipse-mosquitto
-    container_name: mqtt-tls
+    container_name: mqtt3
     expose:
       - 8883
     ports:

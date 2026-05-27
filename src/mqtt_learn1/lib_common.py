@@ -9,8 +9,8 @@ import paho.mqtt.client as mqtt
 def setup_tls_client(
     client: mqtt.Client,
     ca_certs: str | Path,
-    certfile: str | Path,
-    keyfile: str | Path,
+    certfile: str | Path | None = None,
+    keyfile: str | Path | None = None,
 ) -> None:
     """Configure TLS settings for paho-mqtt client.
 
@@ -22,8 +22,8 @@ def setup_tls_client(
     """
     client.tls_set(
         ca_certs=str(ca_certs),
-        certfile=str(certfile),
-        keyfile=str(keyfile),
+        certfile=str(certfile) if certfile is not None else None,
+        keyfile=str(keyfile) if keyfile is not None else None,
         cert_reqs=ssl.CERT_REQUIRED,  # サーバー証明書を必須検証
         tls_version=ssl.PROTOCOL_TLSv1_2,
         ciphers=None,

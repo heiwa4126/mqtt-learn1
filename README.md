@@ -173,8 +173,9 @@ IP: ::1
 pub4 と sub4 で使うユーザ名/パスワードを以下の環境変数経由で設定する。
 `.env` に書くことを想定。
 
+設定例:
+
 ```conf
-# 例。
 PUB4_USER=mqtt_pub4
 PUB4_PASS=xxxxxxxxxxxxxxxxxxx
 SUB4_USER=mqtt_sub4
@@ -232,7 +233,7 @@ eclipse mosquotto にユーザー/パスワード認証で接続すると
 
 > 1779783692: New client connected from 172.18.0.1:45278 as auto-148479D3-A076-74DE-6F3D-0CBDEBC76037 (p4, c1, k60, u'sub4').
 
-のようなログがのこる。sub4 はユーザ名。のこりは
+のようなログがのこる。sub4 はユーザ名。のこりは:
 
 #### `p`
 

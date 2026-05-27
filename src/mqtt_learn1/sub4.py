@@ -7,10 +7,12 @@ from paho.mqtt.reasoncodes import ReasonCode
 
 from mqtt_learn1.lib4 import (
     BROKER,
+    CA_CERT,
     EXPECTED_MESSAGES,
     PORT,
     TOPIC,
 )
+from mqtt_learn1.lib_common import setup_tls_client
 from mqtt_learn1.sub_lib import on_subscribe, on_unsubscribe
 
 # 環境変数が未定義なら死ぬように, os.getenv() ではなく os.environ[] を使う
@@ -51,6 +53,9 @@ mqttc.on_connect = on_connect
 mqttc.on_message = on_message
 mqttc.on_subscribe = on_subscribe
 mqttc.on_unsubscribe = on_unsubscribe
+
+# Setup TLS
+setup_tls_client(mqttc, CA_CERT)
 
 # Setup username and password authentication
 mqttc.username_pw_set(MQTT_USERNAME, MQTT_PASSWORD)
