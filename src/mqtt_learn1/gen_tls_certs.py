@@ -11,6 +11,10 @@ _DEFAULT_SANS = ["*.nip.io", "*.sslip.io", "localhost", "127.0.0.1", "::1"]
 ROOT = Path(__file__).resolve().parents[2]
 TLS_ROOT = ROOT / "var" / "tls"
 
+ORGANIZATION_NAME = "My Company"  # O
+ORGANIZATION_UNIT_NAME = "Dev Team"  # OU
+# trustme のデフォルト値でもいいのだが、一応
+
 
 def write_pem(blob: trustme.Blob, path: Path, force: bool) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -47,9 +51,16 @@ def main() -> None:
         if extra not in sans:
             sans.append(extra)
 
-    ca = trustme.CA()
+    ca = trustme.CA(
+        organization_name=ORGANIZATION_NAME,  # O
+        organization_unit_name=ORGANIZATION_UNIT_NAME,  # OU
+    )
 
-    server_cert = ca.issue_cert(*sans)
+    server_cert = ca.issue_cert(
+        *sans,
+        organization_name=ORGANIZATION_NAME,  # O
+        organization_unit_name=ORGANIZATION_UNIT_NAME,  # OU
+    )
 
     ca_cert_path = TLS_ROOT / "ca" / "ca.crt"
     server_cert_path = TLS_ROOT / "server" / "server.crt"
@@ -68,8 +79,11 @@ def main() -> None:
     for device_number in range(1, 6):
         client_id = f"device{device_number}"
         client_cert = ca.issue_cert(
-            client_id, common_name=client_id
-        )  # CNに追加するだけでSANにも入る
+            client_id,
+            organization_name=ORGANIZATION_NAME,  # O
+            organization_unit_name=ORGANIZATION_UNIT_NAME,  # OU
+            common_name=client_id,  # CN(SANにも入る)
+        )
         client_cert_path = TLS_ROOT / "client" / f"{client_id}.crt"
         client_key_path = TLS_ROOT / "client" / f"{client_id}.key"
 
