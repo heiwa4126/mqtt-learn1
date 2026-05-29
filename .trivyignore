@@ -1,2 +1,2 @@
-var/tls/server/server.key
+private-key path:var/tls/**/*
 .env-template
