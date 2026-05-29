@@ -351,6 +351,47 @@ ACL ファイルの書き方はけっこうややこしそう...
 - `use_subject_as_username  true` だと Subject 全体 `O=...,OU=...,CN=device1`
 - SANs は使わない
 
-## ws: と wss:
+## ■ 第6系統 - MQTT over WSS (認証なし) 10443/TCPで待ち受ける
 
-(TODO)
+3 系列をベースに、トランスポートを WebSocket + TLS (wss) にした系統。
+認証は追加しない(匿名接続)。
+
+今回は `10443/tcp` を使う。
+
+第 3 系列との実質的な違いは PORT 番号とここ↓だけ
+
+```python
+# 3系
+mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+# 6系
+mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, transport="websockets")
+```
+
+### 実行
+
+```sh
+poe mqtt6
+poe logs6
+```
+
+で
+
+```sh
+# 別のshellで
+poe sub6
+# 別のshellで
+poe pub6
+```
+
+中身は pub1/sub1 と同じで、接続方式だけ wss。終わったら
+
+```sh
+# ブローカを止める
+poe down6
+```
+
+### ws: と wss:
+
+- `ws://` は WebSocket 平文
+- `wss://` は WebSocket over TLS (HTTPS と同じく TLS 付き)
+- このリポジトリの 6 系列は `wss` を使う

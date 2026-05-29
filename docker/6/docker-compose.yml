@@ -1,0 +1,12 @@
+services:
+  mqtt:
+    image: eclipse-mosquitto
+    container_name: mqtt6
+    expose:
+      - 10443
+    ports:
+      - 10443:10443
+    restart: no
+    volumes:
+      - ./mosquitto/config:/mosquitto/config:ro
+      - ../../var/tls:/mosquitto/tls:ro
