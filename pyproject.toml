@@ -5,7 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 authors = [{ name = "heiwa4126", email = "heiwa4126@gmail.com" }]
 requires-python = ">=3.12"
-dependencies = ["paho-mqtt>=2.1.0", "tzdata>=2026.2"]
+dependencies = ["paho-mqtt>=2.1.0", "tzdata>=2026.3"]
 
 [tool.pyrefly]
 project-includes = ["**/*.py*", "**/*.ipynb"]
@@ -14,8 +14,8 @@ project-includes = ["**/*.py*", "**/*.ipynb"]
 mqtt-learn1 = "mqtt_learn1:main"
 
 [build-system]
-requires = ["uv_build>=0.11.24,<0.12.0"]
+requires = ["uv_build>=0.11.32,<0.12.0"]
 build-backend = "uv_build"
 
 [dependency-groups]
-dev = ["poethepoet>=0.45.0", "pyrefly>=1.0.0", "ruff>=0.15.19", "trustme>=1.2.1"]
+dev = ["poethepoet>=0.48.0", "pyrefly>=1.0.0", "ruff>=0.16.0", "trustme>=1.2.1"]
