@@ -1,7 +1,7 @@
 * text=auto eol=lf
-*.{cmd,[cC][mM][dD]} text eol=crlf
-*.{bat,[bB][aA][tT]} text eol=crlf
-*.{reg,[rR][eE][gG]} text eol=crlf encoding=UTF-16LE-BOM
+*.cmd text eol=crlf working-tree-encoding=SHIFT-JIS
+*.bat text eol=crlf working-tree-encoding=SHIFT-JIS
+*.reg text eol=crlf working-tree-encoding=UTF-16LE-BOM
 *.lockb binary diff=lockb
 
 *.ipynb filter=nbstripout

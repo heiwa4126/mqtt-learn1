@@ -15,7 +15,9 @@ from mqtt_learn1.sub_lib import (
     on_unsubscribe,
 )
 
-mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, transport="websockets") # sub3との違いは実質ここだけ
+mqttc = mqtt.Client(
+    mqtt.CallbackAPIVersion.VERSION2, transport="websockets"
+)  # sub3との違いは実質ここだけ
 mqttc.on_connect = make_on_connect(TOPIC)
 mqttc.on_message = make_on_message(TOPIC, EXPECTED_MESSAGES)
 mqttc.on_subscribe = on_subscribe
